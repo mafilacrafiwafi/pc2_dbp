@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react'
 import type { ReactNode } from 'react'
 import { useLocalStorage } from '../hooks/useLocalStorage'
-import * as services from '../api/services'
+import { login as loginRequest } from '../api/services'
 
 interface AuthContextType {
   token: string | null
@@ -9,13 +9,13 @@ interface AuthContextType {
   logout: () => void
 }
 
-const AuthContext = createContext<AuthContextType | null>(null)
+const AuthContext = createContext<AuthContextType>({} as AuthContextType)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [token, setToken] = useLocalStorage('token', null)
 
   const login = async (email: string, password: string) => {
-    const data = await services.login({ email, password })
+    const data = await loginRequest({ email, password })
     setToken(data.token)
   }
 
@@ -31,9 +31,5 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 }
 
 export function useAuth() {
-  const context = useContext(AuthContext)
-  if (!context) {
-    throw new Error('useAuth debe usarse dentro de AuthProvider')
-  }
-  return context
+  return useContext(AuthContext)
 }

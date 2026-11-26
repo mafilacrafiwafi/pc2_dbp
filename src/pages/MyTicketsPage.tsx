@@ -1,0 +1,15 @@
+import Navbar from '../components/Navbar'
+
+// mis solicitudes
+function MyTicketsPage() {
+  return (
+    <div>
+      <Navbar />
+      <div className="p-6">
+        <h1 className="text-2xl font-bold">Mis solicitudes</h1>
+      </div>
+    </div>
+  )
+}
+
+export default MyTicketsPage

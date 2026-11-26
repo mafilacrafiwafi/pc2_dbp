@@ -7,7 +7,6 @@ interface FormFieldProps {
   error?: string
 }
 
-// campo de formulario con label y error
 function FormField({ label, name, type = 'text', value, onChange, error }: FormFieldProps) {
   return (
     <div className="mb-4">

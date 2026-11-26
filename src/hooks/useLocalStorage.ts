@@ -1,6 +1,5 @@
 import { useState } from 'react'
 
-// version temporal: reemplazar por el hook que me pasan
 export function useLocalStorage(key: string, initialValue: string | null) {
   const [value, setValue] = useState<string | null>(() => {
     const saved = localStorage.getItem(key)

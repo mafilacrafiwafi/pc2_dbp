@@ -21,6 +21,23 @@ export interface LoginResponse {
   token: string
 }
 
+export interface Location {
+  id: number
+  name: string
+  building: string
+  floor: number
+  status: 'OPEN' | 'CLOSED'
+  description: string
+}
+
+export interface LocationsPage {
+  items: Location[]
+  page: number
+  size: number
+  totalItems: number
+  totalPages: number
+}
+
 export interface ApiError {
   code: string
   message: string

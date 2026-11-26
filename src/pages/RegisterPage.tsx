@@ -24,10 +24,10 @@ function RegisterPage() {
       newErrors.name = 'El nombre debe tener hasta 100 caracteres'
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      newErrors.email = 'Ingresa un correo válido'
+      newErrors.email = 'Ingresa un correo valido'
     }
     if (password.length < 8 || password.length > 72) {
-      newErrors.password = 'La contraseña debe tener de 8 a 72 caracteres'
+      newErrors.password = 'La contrasena debe tener de 8 a 72 caracteres'
     }
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
@@ -62,7 +62,7 @@ function RegisterPage() {
 
         <FormField label="Nombre" name="name" value={name} onChange={setName} error={errors.name} />
         <FormField label="Correo" name="email" type="email" value={email} onChange={setEmail} error={errors.email} />
-        <FormField label="Contraseña" name="password" type="password" value={password} onChange={setPassword} error={errors.password} />
+        <FormField label="Contrasena" name="password" type="password" value={password} onChange={setPassword} error={errors.password} />
 
         <button
           type="submit"
@@ -73,9 +73,9 @@ function RegisterPage() {
         </button>
 
         <p className="text-sm text-center mt-4">
-          ¿Ya tienes cuenta?{' '}
+          Ya tienes cuenta?{' '}
           <Link to="/login" className="text-blue-600 hover:underline">
-            Inicia sesión
+            Inicia sesion
           </Link>
         </p>
       </form>
