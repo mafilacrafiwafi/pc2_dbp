@@ -36,7 +36,7 @@ function ListPage() {
   }, [page])
 
   return (
-    <div>
+    <div className="min-h-screen bg-gray-100">
       <Navbar />
       <div className="p-6 max-w-3xl mx-auto">
         <h1 className="text-2xl font-bold mb-4">Espacios</h1>
@@ -59,7 +59,15 @@ function ListPage() {
         {!loading && !error && locations.length > 0 && (
           <div className="grid gap-4">
             {locations.map((location) => (
-              <ItemCard key={location.id} location={location} />
+              <ItemCard
+                key={location.id}
+                title={location.name}
+                status={location.status}
+                to={`/locations/${location.id}`}
+              >
+                <p className="text-gray-600 text-sm">Edificio: {location.building}</p>
+                <p className="text-gray-600 text-sm">Piso: {location.floor}</p>
+              </ItemCard>
             ))}
           </div>
         )}

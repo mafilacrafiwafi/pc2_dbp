@@ -62,7 +62,11 @@ function DetailPage() {
       setDescription('')
       loadLocation()
     } catch (err) {
-      if (axios.isAxiosError(err) && err.response) {
+      // el espacio esta cerrado
+      if (axios.isAxiosError(err) && err.response?.status === 409 && err.response.data.code === 'LOCATION_CLOSED') {
+        setSendError('El espacio esta cerrado y no admite solicitudes')
+        loadLocation()
+      } else if (axios.isAxiosError(err) && err.response) {
         setSendError(err.response.data.message)
       } else {
         setSendError('No se pudo enviar la solicitud')
@@ -73,7 +77,7 @@ function DetailPage() {
   }
 
   return (
-    <div>
+    <div className="min-h-screen bg-gray-100">
       <Navbar />
       <div className="p-6 max-w-3xl mx-auto">
         <Link to="/dashboard" className="text-blue-600 hover:underline">

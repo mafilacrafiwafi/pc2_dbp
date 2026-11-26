@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
-import StatusBadge from '../components/StatusBadge'
+import ItemCard from '../components/ItemCard'
 import { getMyTickets } from '../api/services'
 import type { Ticket } from '../types'
 
@@ -28,7 +28,7 @@ function MyTicketsPage() {
   }, [])
 
   return (
-    <div>
+    <div className="min-h-screen bg-gray-100">
       <Navbar />
       <div className="p-6 max-w-3xl mx-auto">
         <h1 className="text-2xl font-bold mb-4">Mis solicitudes</h1>
@@ -51,15 +51,9 @@ function MyTicketsPage() {
         {!loading && !error && tickets.length > 0 && (
           <div className="grid gap-4">
             {tickets.map((ticket) => (
-              <div key={ticket.id} className="bg-white border border-gray-200 rounded p-4">
-                <div className="flex items-center justify-between mb-2">
-                  <h2 className="font-semibold">
-                    #{ticket.id} - {ticket.resourceName}
-                  </h2>
-                  <StatusBadge status={ticket.status} />
-                </div>
+              <ItemCard key={ticket.id} title={`#${ticket.id} - ${ticket.resourceName}`} status={ticket.status}>
                 <p className="text-gray-700">{ticket.description}</p>
-              </div>
+              </ItemCard>
             ))}
           </div>
         )}

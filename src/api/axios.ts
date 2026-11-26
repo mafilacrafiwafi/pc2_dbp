@@ -9,7 +9,12 @@ const api = axios.create({
 api.interceptors.request.use((config) => {
   const saved = localStorage.getItem('token')
   if (saved) {
-    config.headers.Authorization = `Bearer ${JSON.parse(saved)}`
+    // si alteraron el token y ya no es JSON, se manda tal cual
+    let token = saved
+    try {
+      token = JSON.parse(saved)
+    } catch {}
+    config.headers.Authorization = `Bearer ${token}`
   }
   return config
 })
