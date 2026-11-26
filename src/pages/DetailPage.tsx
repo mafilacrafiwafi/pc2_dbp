@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
+import type { FormEvent } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import axios from 'axios'
 import Navbar from '../components/Navbar'
 import StatusBadge from '../components/StatusBadge'
-import { getLocation } from '../api/services'
+import FormField from '../components/FormField'
+import { createTicket, getLocation } from '../api/services'
 import type { Location } from '../types'
 
 // detalle de un espacio
@@ -12,6 +14,11 @@ function DetailPage() {
   const [location, setLocation] = useState<Location | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [description, setDescription] = useState('')
+  const [descriptionError, setDescriptionError] = useState('')
+  const [sending, setSending] = useState(false)
+  const [success, setSuccess] = useState('')
+  const [sendError, setSendError] = useState('')
 
   // pide el espacio por su id
   const loadLocation = async () => {
@@ -34,6 +41,36 @@ function DetailPage() {
   useEffect(() => {
     loadLocation()
   }, [id])
+
+  // formulario para crear una solicitud
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault()
+    setSuccess('')
+    setSendError('')
+
+    const text = description.trim()
+    if (text.length < 10 || text.length > 200) {
+      setDescriptionError('La descripcion debe tener de 10 a 200 caracteres')
+      return
+    }
+    setDescriptionError('')
+
+    setSending(true)
+    try {
+      await createTicket(id!, text)
+      setSuccess('Solicitud creada correctamente')
+      setDescription('')
+      loadLocation()
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response) {
+        setSendError(err.response.data.message)
+      } else {
+        setSendError('No se pudo enviar la solicitud')
+      }
+    } finally {
+      setSending(false)
+    }
+  }
 
   return (
     <div>
@@ -59,6 +96,32 @@ function DetailPage() {
             <p className="text-gray-600">Edificio: {location.building}</p>
             <p className="text-gray-600">Piso: {location.floor}</p>
           </div>
+        )}
+
+        {success && <p className="bg-green-100 text-green-700 p-4 rounded mt-4">{success}</p>}
+
+        {!loading && location && (
+          <form onSubmit={handleSubmit} className="bg-white border border-gray-200 rounded p-6 mt-4">
+            <h2 className="text-lg font-semibold mb-4">Nueva solicitud</h2>
+
+            {sendError && <p className="bg-red-100 text-red-700 p-2 rounded mb-4">{sendError}</p>}
+
+            <FormField
+              label="Descripcion del problema"
+              name="description"
+              value={description}
+              onChange={setDescription}
+              error={descriptionError}
+            />
+
+            <button
+              type="submit"
+              disabled={sending}
+              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50"
+            >
+              {sending ? 'Enviando...' : 'Enviar solicitud'}
+            </button>
+          </form>
         )}
       </div>
     </div>

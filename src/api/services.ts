@@ -1,5 +1,5 @@
 import api from './axios'
-import type { Location, LocationsPage, LoginRequest, LoginResponse, RegisterRequest, RegisterResponse } from '../types'
+import type { Location, LocationsPage, LoginRequest, LoginResponse, RegisterRequest, RegisterResponse, Ticket } from '../types'
 
 // registro
 export async function register(data: RegisterRequest) {
@@ -20,5 +20,17 @@ export async function getLocations(page: number, size: number) {
 
 export async function getLocation(id: string) {
   const res = await api.get<Location>(`/locations/${id}`)
+  return res.data
+}
+
+// crear solicitud para un espacio
+export async function createTicket(id: string, description: string) {
+  const res = await api.post<Ticket>(`/locations/${id}/tickets`, { description })
+  return res.data
+}
+
+// solicitudes del usuario
+export async function getMyTickets() {
+  const res = await api.get<Ticket[]>('/me/tickets')
   return res.data
 }

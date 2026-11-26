@@ -38,6 +38,14 @@ export interface LocationsPage {
   totalPages: number
 }
 
+export interface Ticket {
+  id: number
+  resourceId: number
+  resourceName: string
+  description: string
+  status: 'OPEN' | 'CLOSED'
+}
+
 export interface ApiError {
   code: string
   message: string
